@@ -9,12 +9,12 @@ interface Props {
 
 const MovieCard = ({ movie }: Props) => {
   return (
-    <Card borderRadius={10} overflow={"hidden"}>
-      <Image src={ api_img + movie.poster_path} />
+    <Card width="250px" borderRadius={10} overflow={"hidden"}>
+      <Image src={api_img + movie.poster_path} />
       <CardBody>
         <HStack justifyContent={"space-between"}>
-        <Heading fontSize={"2xl"}>{movie.title}</Heading>
-        <CriticScore score={movie.vote_average} />
+          <Heading fontSize={"2xl"}>{movie.title}</Heading>
+          <CriticScore score={movie.vote_average} />
         </HStack>
       </CardBody>
     </Card>
