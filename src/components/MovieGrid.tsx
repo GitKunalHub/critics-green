@@ -1,16 +1,17 @@
-import { Text, useStatStyles } from "@chakra-ui/react";
+import { SimpleGrid, Text, useStatStyles } from "@chakra-ui/react";
 import useMovie from "../hooks/useMovie";
+import MovieCard from "./MovieCard";
 
 const MovieGrid = () => {
   const { movies, error } = useMovie();
   return (
     <>
       {error && <Text>{error}</Text>}
-      <ul>
+      <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 5 }} padding='10px' spacing={10}>
         {movies.map((movie) => (
-          <li key={movie.id}>{movie.title}</li>
+          <MovieCard key={movie.id} movie={movie} />
         ))}
-      </ul>
+      </SimpleGrid>
     </>
   );
 };
