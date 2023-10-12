@@ -9,7 +9,7 @@ interface Props {
 
 const MovieCard = ({ movie }: Props) => {
   return (
-    <Card width="250px" borderRadius={10} overflow={"hidden"}>
+    <Card>
       <Image src={api_img + movie.poster_path} />
       <CardBody>
         <HStack justifyContent={"space-between"}>
