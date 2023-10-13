@@ -5,7 +5,7 @@ import MovieCardSkeleton from "./MovieCardSkeleton";
 import MovieCardContainer from "./MovieCardContainer";
 
 const MovieGrid = () => {
-  const { movies, error, isLoading } = useMovie();
+  const { movies: data, error, isLoading } = useMovie();
   const skeletons = [1, 2, 3, 4, 5, 6];
   return (
     <>
@@ -21,7 +21,7 @@ const MovieGrid = () => {
               <MovieCardSkeleton key={skeleton} />
             </MovieCardContainer>
           ))}
-        {movies.map((movie) => (
+        {data.map((movie) => (
           <MovieCardContainer>
             <MovieCard key={movie.id} movie={movie} />
           </MovieCardContainer>
