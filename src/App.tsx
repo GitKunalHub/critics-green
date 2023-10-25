@@ -7,11 +7,13 @@ import { useState } from "react";
 import PlatformSelector from "./components/PlatformSelector";
 import useMovie from "./hooks/useMovie";
 import SortSelector from "./components/SortSelector";
+import SearchInput from "./components/SearchInput";
 
 export interface MovieQuery {
   genre: Genre | null;
   platform: string;
   sortOrder: string;
+  searchText: string;
 }
 
 function App() {
@@ -35,7 +37,11 @@ function App() {
       }}
     >
       <GridItem area="nav">
-        <NavBar />
+        <NavBar
+          onSearch={(searchText) =>
+            setMovieQuery({ ...movieQuery, searchText })
+          }
+        />
       </GridItem>
       <Show above="lg">
         <GridItem area="aside" paddingX="5px">

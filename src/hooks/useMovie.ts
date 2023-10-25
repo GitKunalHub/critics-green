@@ -30,11 +30,15 @@ const useMovie = (movieQuery: MovieQuery) => {
     if (movieQuery.platform === "TV Shows") {
       apiUrl = "/discover/tv";
     }
+    if (movieQuery.searchText) {
+      apiUrl = "/search/multi"; // Use the multi-search endpoint for searching
+    }
     apiClient
       .get<FetchMovieResponse>(apiUrl, {
         params: {
           with_genres: movieQuery.genre?.id,
           sort_by: movieQuery.sortOrder,
+          query: movieQuery.searchText,
         },
         signal: controller.signal,
       })
