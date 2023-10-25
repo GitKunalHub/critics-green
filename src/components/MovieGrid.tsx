@@ -7,10 +7,15 @@ import { Genre } from "../hooks/useGenres";
 
 interface Props {
   selectedGenre: Genre | null;
+  selectedPlatform: string;
 }
 
-const MovieGrid = ({ selectedGenre }: Props) => {
-  const { movies: data, error, isLoading } = useMovie(selectedGenre);
+const MovieGrid = ({ selectedGenre, selectedPlatform }: Props) => {
+  const {
+    movies: data,
+    error,
+    isLoading,
+  } = useMovie(selectedGenre, selectedPlatform);
   const skeletons = [1, 2, 3, 4, 5, 6];
   return (
     <>

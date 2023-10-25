@@ -8,6 +8,7 @@ export interface Movie {
   title: string;
   poster_path: string;
   vote_average: number;
+  name?: string;
 }
 
 interface FetchMovieResponse {
@@ -15,7 +16,10 @@ interface FetchMovieResponse {
   results: Movie[];
 }
 
-const useMovie = (selectedGenre: Genre | null) => {
+const useMovie = (
+  selectedGenre: Genre | null,
+  platform: string | null = null
+) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
@@ -23,13 +27,30 @@ const useMovie = (selectedGenre: Genre | null) => {
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
+
+    let apiUrl = "/discover/movie"; // Default to movie platform
+    if (platform === "TV Shows") {
+      apiUrl = "/discover/tv";
+    }
     apiClient
-      .get<FetchMovieResponse>("/discover/movie", {
+      .get<FetchMovieResponse>(apiUrl, {
         params: { with_genres: selectedGenre?.id },
         signal: controller.signal,
       })
       .then((res) => {
-        setMovies(res.data.results);
+        const responseData = res.data.results.map((item) => {
+          const title =
+            platform === "TV Shows"
+              ? item.name || "Unknown Title"
+              : item.title || "Unknown Title";
+          return {
+            id: item.id,
+            title,
+            poster_path: item.poster_path,
+            vote_average: item.vote_average,
+          };
+        });
+        setMovies(responseData);
         setLoading(false);
       })
       .catch((err) => {
@@ -39,7 +60,7 @@ const useMovie = (selectedGenre: Genre | null) => {
       });
 
     return () => controller.abort();
-  }, [selectedGenre?.id]);
+  }, [selectedGenre?.id, platform]);
 
   return { movies, error, isLoading };
 };

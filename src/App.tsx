@@ -3,10 +3,21 @@ import NavBar from "./components/NavBar";
 import MovieGrid from "./components/MovieGrid";
 import GenreList from "./components/GenreList";
 import { Genre } from "./hooks/useGenres";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PlatformSelector from "./components/PlatformSelector";
+import useMovie from "./hooks/useMovie";
 function App() {
   const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
+  const [selectedPlatform, setSelectedPlatform] = useState("Movies"); // Default to Movies
+
+  const handlePlatformSelect = (platform: string) => {
+    setSelectedPlatform(platform);
+  };
+
+  const { movies, error, isLoading } = useMovie(
+    selectedGenre,
+    selectedPlatform
+  );
 
   return (
     <Grid
@@ -31,8 +42,11 @@ function App() {
         </GridItem>
       </Show>
       <GridItem area="main">
-        <PlatformSelector />
-        <MovieGrid selectedGenre={selectedGenre} />
+        <PlatformSelector onSelectPlatform={handlePlatformSelect} />
+        <MovieGrid
+          selectedGenre={selectedGenre}
+          selectedPlatform={selectedPlatform}
+        />
       </GridItem>
     </Grid>
   );
