@@ -32,7 +32,10 @@ const useMovie = (movieQuery: MovieQuery) => {
     }
     apiClient
       .get<FetchMovieResponse>(apiUrl, {
-        params: { with_genres: movieQuery.genre?.id },
+        params: {
+          with_genres: movieQuery.genre?.id,
+          sort_by: movieQuery.sortOrder,
+        },
         signal: controller.signal,
       })
       .then((res) => {

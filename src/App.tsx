@@ -11,6 +11,7 @@ import SortSelector from "./components/SortSelector";
 export interface MovieQuery {
   genre: Genre | null;
   platform: string;
+  sortOrder: string;
 }
 
 function App() {
@@ -47,7 +48,12 @@ function App() {
       <GridItem area="main">
         <HStack spacing={5} paddingLeft={2} marginBottom={5}>
           <PlatformSelector onSelectPlatform={handlePlatformSelect} />
-          <SortSelector />
+          <SortSelector
+            sortOrder={movieQuery.sortOrder}
+            onSelectSortOrder={(sortOrder) =>
+              setMovieQuery({ ...movieQuery, sortOrder })
+            }
+          />
         </HStack>
         <MovieGrid movieQuery={movieQuery} />
       </GridItem>
