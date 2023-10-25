@@ -8,6 +8,7 @@ import PlatformSelector from "./components/PlatformSelector";
 import useMovie from "./hooks/useMovie";
 import SortSelector from "./components/SortSelector";
 import SearchInput from "./components/SearchInput";
+import MovieHeading from "./components/MovieHeading";
 
 export interface MovieQuery {
   genre: Genre | null;
@@ -52,17 +53,20 @@ function App() {
         </GridItem>
       </Show>
       <GridItem area="main">
-        <Flex paddingLeft={2} marginBottom={5}>
-          <Box marginRight={5}>
-            <PlatformSelector onSelectPlatform={handlePlatformSelect} />
-          </Box>
-          <SortSelector
-            sortOrder={movieQuery.sortOrder}
-            onSelectSortOrder={(sortOrder) =>
-              setMovieQuery({ ...movieQuery, sortOrder })
-            }
-          />
-        </Flex>
+        <Box paddingLeft={2}>
+          <MovieHeading movieQuery={movieQuery} />
+          <Flex marginBottom={5}>
+            <Box marginRight={5}>
+              <PlatformSelector onSelectPlatform={handlePlatformSelect} />
+            </Box>
+            <SortSelector
+              sortOrder={movieQuery.sortOrder}
+              onSelectSortOrder={(sortOrder) =>
+                setMovieQuery({ ...movieQuery, sortOrder })
+              }
+            />
+          </Flex>
+        </Box>
         <MovieGrid movieQuery={movieQuery} />
       </GridItem>
     </Grid>
