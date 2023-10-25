@@ -13,27 +13,27 @@ interface Props {
 const MovieGrid = ({ movieQuery }: Props) => {
   const { movies: data, error, isLoading } = useMovie(movieQuery);
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+
+  if (error) return <Text>{error}</Text>;
+
   return (
-    <>
-      {error && <Text>{error}</Text>}
-      <SimpleGrid
-        columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
-        padding="10px"
-        spacing={6}
-      >
-        {isLoading &&
-          skeletons.map((skeleton) => (
-            <MovieCardContainer key={skeleton}>
-              <MovieCardSkeleton />
-            </MovieCardContainer>
-          ))}
-        {data.map((movie) => (
-          <MovieCardContainer key={movie.id}>
-            <MovieCard movie={movie} />
+    <SimpleGrid
+      columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
+      padding="10px"
+      spacing={6}
+    >
+      {isLoading &&
+        skeletons.map((skeleton) => (
+          <MovieCardContainer key={skeleton}>
+            <MovieCardSkeleton />
           </MovieCardContainer>
         ))}
-      </SimpleGrid>
-    </>
+      {data.map((movie) => (
+        <MovieCardContainer key={movie.id}>
+          <MovieCard movie={movie} />
+        </MovieCardContainer>
+      ))}
+    </SimpleGrid>
   );
 };
 
