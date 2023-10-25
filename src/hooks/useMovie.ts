@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import apiClient from "../services/api-client";
 import { AxiosRequestConfig, CanceledError } from "axios";
 import { Genre } from "./useGenres";
+import { MovieQuery } from "../App";
 
 export interface Movie {
   id: number;
@@ -16,10 +17,7 @@ interface FetchMovieResponse {
   results: Movie[];
 }
 
-const useMovie = (
-  selectedGenre: Genre | null,
-  platform: string | null = null
-) => {
+const useMovie = (movieQuery: MovieQuery) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
@@ -29,18 +27,18 @@ const useMovie = (
     setLoading(true);
 
     let apiUrl = "/discover/movie"; // Default to movie platform
-    if (platform === "TV Shows") {
+    if (movieQuery.platform === "TV Shows") {
       apiUrl = "/discover/tv";
     }
     apiClient
       .get<FetchMovieResponse>(apiUrl, {
-        params: { with_genres: selectedGenre?.id },
+        params: { with_genres: movieQuery.genre?.id },
         signal: controller.signal,
       })
       .then((res) => {
         const responseData = res.data.results.map((item) => {
           const title =
-            platform === "TV Shows"
+            movieQuery.platform === "TV Shows"
               ? item.name || "Unknown Title"
               : item.title || "Unknown Title";
           return {
@@ -60,7 +58,7 @@ const useMovie = (
       });
 
     return () => controller.abort();
-  }, [selectedGenre?.id, platform]);
+  }, [movieQuery]);
 
   return { movies, error, isLoading };
 };

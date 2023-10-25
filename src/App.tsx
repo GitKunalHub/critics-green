@@ -3,21 +3,23 @@ import NavBar from "./components/NavBar";
 import MovieGrid from "./components/MovieGrid";
 import GenreList from "./components/GenreList";
 import { Genre } from "./hooks/useGenres";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PlatformSelector from "./components/PlatformSelector";
 import useMovie from "./hooks/useMovie";
+
+export interface MovieQuery {
+  genre: Genre | null;
+  platform: string;
+}
+
 function App() {
-  const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
-  const [selectedPlatform, setSelectedPlatform] = useState("Movies"); // Default to Movies
+  const [movieQuery, setMovieQuery] = useState<MovieQuery>({} as MovieQuery);
 
   const handlePlatformSelect = (platform: string) => {
-    setSelectedPlatform(platform);
+    setMovieQuery({ ...movieQuery, platform });
   };
 
-  const { movies, error, isLoading } = useMovie(
-    selectedGenre,
-    selectedPlatform
-  );
+  const { movies, error, isLoading } = useMovie(movieQuery);
 
   return (
     <Grid
@@ -36,17 +38,14 @@ function App() {
       <Show above="lg">
         <GridItem area="aside" paddingX="5px">
           <GenreList
-            selectedGenre={selectedGenre}
-            onSelectGenre={(genre) => setSelectedGenre(genre)}
+            selectedGenre={movieQuery.genre}
+            onSelectGenre={(genre) => setMovieQuery({ ...movieQuery, genre })}
           />
         </GridItem>
       </Show>
       <GridItem area="main">
         <PlatformSelector onSelectPlatform={handlePlatformSelect} />
-        <MovieGrid
-          selectedGenre={selectedGenre}
-          selectedPlatform={selectedPlatform}
-        />
+        <MovieGrid movieQuery={movieQuery} />
       </GridItem>
     </Grid>
   );
