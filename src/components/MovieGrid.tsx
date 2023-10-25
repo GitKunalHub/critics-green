@@ -12,7 +12,7 @@ interface Props {
 
 const MovieGrid = ({ movieQuery }: Props) => {
   const { movies: data, error, isLoading } = useMovie(movieQuery);
-  const skeletons = [1, 2, 3, 4, 5, 6];
+  const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
   return (
     <>
       {error && <Text>{error}</Text>}

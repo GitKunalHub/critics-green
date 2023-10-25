@@ -1,4 +1,4 @@
-import { Grid, GridItem, HStack, Show } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, HStack, Show } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
 import MovieGrid from "./components/MovieGrid";
 import GenreList from "./components/GenreList";
@@ -46,15 +46,17 @@ function App() {
         </GridItem>
       </Show>
       <GridItem area="main">
-        <HStack spacing={5} paddingLeft={2} marginBottom={5}>
-          <PlatformSelector onSelectPlatform={handlePlatformSelect} />
+        <Flex paddingLeft={2} marginBottom={5}>
+          <Box marginRight={5}>
+            <PlatformSelector onSelectPlatform={handlePlatformSelect} />
+          </Box>
           <SortSelector
             sortOrder={movieQuery.sortOrder}
             onSelectSortOrder={(sortOrder) =>
               setMovieQuery({ ...movieQuery, sortOrder })
             }
           />
-        </HStack>
+        </Flex>
         <MovieGrid movieQuery={movieQuery} />
       </GridItem>
     </Grid>
