@@ -15,10 +15,7 @@ interface FetchMovieResponse {
   results: Movie[];
 }
 
-const useMovie = (
-  selectGenre: Genre | null,
-  requestConfig?: AxiosRequestConfig
-) => {
+const useMovie = (selectedGenre: Genre | null) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
@@ -28,6 +25,7 @@ const useMovie = (
     setLoading(true);
     apiClient
       .get<FetchMovieResponse>("/discover/movie", {
+        params: { with_genres: selectedGenre?.id },
         signal: controller.signal,
       })
       .then((res) => {
@@ -41,7 +39,7 @@ const useMovie = (
       });
 
     return () => controller.abort();
-  }, []);
+  }, [selectedGenre?.id]);
 
   return { movies, error, isLoading };
 };
