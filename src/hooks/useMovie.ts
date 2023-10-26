@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import apiClient from "../services/api-client";
-import { AxiosRequestConfig, CanceledError } from "axios";
-import { Genre } from "./useGenres";
+import { CanceledError } from "axios";
 import { MovieQuery } from "../App";
 
 export interface Movie {
+  overview: string;
+  release_date: string;
   id: number;
   title: string;
   poster_path: string;
@@ -53,6 +54,8 @@ const useMovie = (movieQuery: MovieQuery) => {
             title,
             poster_path: item.poster_path,
             vote_average: item.vote_average,
+            overview: item.overview,
+            release_date: item.release_date,
           };
         });
         setMovies(responseData);

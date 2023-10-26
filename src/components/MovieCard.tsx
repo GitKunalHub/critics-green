@@ -7,11 +7,12 @@ import placeholder from "../assets/placeholder.jpg";
 const api_img = "https://image.tmdb.org/t/p/w500/";
 interface Props {
   movie: Movie;
+  onClick: () => void;
 }
 
-const MovieCard = ({ movie }: Props) => {
+const MovieCard = ({ movie, onClick }: Props) => {
   return (
-    <Card>
+    <Card className="clickable-card" onClick={onClick}>
       {movie.poster_path ? (
         <Image src={api_img + movie.poster_path} />
       ) : (
