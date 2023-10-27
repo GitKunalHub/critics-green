@@ -9,7 +9,7 @@ import {
   IconButton,
   Input,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
@@ -21,32 +21,6 @@ import { FcGoogle } from "react-icons/fc";
 const VariantColour = "teal";
 
 const Auth = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const signIn = async () => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const signInWithGoogle = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const logOut = async () => {
-    try {
-      await signOut(auth);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   return (
     <div>
       <Flex
@@ -89,32 +63,87 @@ const Auth = () => {
 };
 
 const LoginHeader = () => {
+  const [animatedText, setAnimatedText] = useState(""); // Changed: Added state for animated text
+  const targetText = "Critics Green"; // The target text to type
+
+  useEffect(() => {
+    let currentIndex = 0;
+    const textAnimation = setInterval(() => {
+      if (currentIndex <= targetText.length) {
+        setAnimatedText(targetText.slice(0, currentIndex)); // Update animatedText with a slice of targetText
+        currentIndex += 1;
+      } else {
+        clearInterval(textAnimation);
+      }
+    }, 100); // Adjust the interval for typing speed
+  }, []);
+
   return (
     <Box textAlign="center">
       <Heading>Sign In to </Heading>
       <Heading color={VariantColour} marginTop={2}>
-        Critics Green
+        {animatedText}
       </Heading>
     </Box>
   );
 };
 
 const LoginForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const signIn = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const logOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <Box marginY={8} textAlign="left">
       <form>
         <FormControl marginTop={5}>
           <FormLabel>E-Mail Address: </FormLabel>
-          <Input type="email" placeholder="Enter your Email Address.." />
+          <Input
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your Email Address.."
+          />
         </FormControl>
         <FormControl marginTop={3}>
           <FormLabel>Password: </FormLabel>
-          <Input type="password" placeholder="Enter your Password.." />
+          <Input
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your Password.."
+          />
         </FormControl>
-        <Button colorScheme={VariantColour} width="full" marginTop={9}>
+        <Button
+          onClick={signIn}
+          colorScheme={VariantColour}
+          width="full"
+          marginTop={9}
+        >
           Sign In
         </Button>
         <Button
+          onClick={signInWithGoogle}
           colorScheme={VariantColour}
           width="full"
           marginTop={4}
