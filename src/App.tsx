@@ -28,12 +28,7 @@ export interface MovieQuery {
 }
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/auth" element={<Auth />} />
-      <Route path="/home" element={<Home />} />
-    </Routes>
-  );
+  return <Home />;
 }
 
 export default App;
