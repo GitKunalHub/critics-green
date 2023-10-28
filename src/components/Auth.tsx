@@ -26,7 +26,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const signIn = async () => {
     try {
-      navigate("/Home");
+      navigate("/home");
       await createUserWithEmailAndPassword(auth, email, password);
     } catch (err) {
       console.error(err);
@@ -36,7 +36,7 @@ const LoginForm = () => {
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-      navigate("/Home");
+      navigate("/home");
     } catch (err) {
       console.error(err);
     }
