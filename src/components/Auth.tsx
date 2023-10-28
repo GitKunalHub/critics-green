@@ -10,6 +10,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
@@ -19,7 +20,76 @@ import ColorModeSwitch from "./ColorModeSwitch";
 import { FcGoogle } from "react-icons/fc";
 
 const VariantColour = "teal";
+const navigate = useNavigate();
+const LoginForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const signIn = async () => {
+    try {
+      navigate("/Home");
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
+  const signInWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+      navigate("/Home");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const logOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <Box marginY={8} textAlign="left">
+      <form>
+        <FormControl marginTop={5}>
+          <FormLabel>E-Mail Address: </FormLabel>
+          <Input
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your Email Address.."
+          />
+        </FormControl>
+        <FormControl marginTop={3}>
+          <FormLabel>Password: </FormLabel>
+          <Input
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your Password.."
+          />
+        </FormControl>
+        <Button
+          onClick={signIn}
+          colorScheme={VariantColour}
+          width="full"
+          marginTop={9}
+        >
+          Sign In
+        </Button>
+        <Button
+          onClick={signInWithGoogle}
+          colorScheme={VariantColour}
+          width="full"
+          marginTop={4}
+          leftIcon={<FcGoogle />} // Add the Google logo as an icon
+        >
+          Sign up with Google
+        </Button>
+      </form>
+    </Box>
+  );
+};
 const Auth = () => {
   return (
     <div>
@@ -84,74 +154,6 @@ const LoginHeader = () => {
       <Heading color={VariantColour} marginTop={2}>
         {animatedText}
       </Heading>
-    </Box>
-  );
-};
-
-const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const signIn = async () => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const signInWithGoogle = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const logOut = async () => {
-    try {
-      await signOut(auth);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  return (
-    <Box marginY={8} textAlign="left">
-      <form>
-        <FormControl marginTop={5}>
-          <FormLabel>E-Mail Address: </FormLabel>
-          <Input
-            type="email"
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your Email Address.."
-          />
-        </FormControl>
-        <FormControl marginTop={3}>
-          <FormLabel>Password: </FormLabel>
-          <Input
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your Password.."
-          />
-        </FormControl>
-        <Button
-          onClick={signIn}
-          colorScheme={VariantColour}
-          width="full"
-          marginTop={9}
-        >
-          Sign In
-        </Button>
-        <Button
-          onClick={signInWithGoogle}
-          colorScheme={VariantColour}
-          width="full"
-          marginTop={4}
-          leftIcon={<FcGoogle />} // Add the Google logo as an icon
-        >
-          Sign up with Google
-        </Button>
-      </form>
     </Box>
   );
 };
