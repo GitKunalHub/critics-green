@@ -10,6 +10,15 @@ import {
 } from "@chakra-ui/react";
 import useGenres, { Genre } from "../hooks/useGenres";
 import icon from "../assets/240169.png";
+import { auth, db } from "../configuration/firebase"; // Assuming you have already configured Firebase in your project.
+import {
+  getFirestore,
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+} from "firebase/firestore";
+import { useState, useEffect } from "react";
 
 interface Props {
   onSelectGenre: (genre: Genre) => void;
@@ -18,6 +27,49 @@ interface Props {
 
 const GenreList = ({ selectedGenre, onSelectGenre }: Props) => {
   const { data, isLoading, error } = useGenres();
+  const [selectedGenreIds, setSelectedGenreIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    const fetchSelectedGenreIds = async () => {
+      if (auth.currentUser) {
+        const userDocRef = doc(collection(db, "users"), auth.currentUser.uid);
+        const userDocSnapshot = await getDoc(userDocRef);
+
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          if (userData && userData.selectedGenreIds) {
+            setSelectedGenreIds(userData.selectedGenreIds);
+          }
+        }
+      }
+    };
+
+    fetchSelectedGenreIds();
+  }, []);
+
+  const insertGenreIdIntoFirebase = async (genre: Genre) => {
+    if (!auth.currentUser) {
+      return;
+    }
+
+    try {
+      const updatedGenreIds = [...selectedGenreIds, genre.id];
+
+      const userDocRef = doc(collection(db, "users"), auth.currentUser.uid);
+      await setDoc(
+        userDocRef,
+        {
+          selectedGenreIds: updatedGenreIds,
+        },
+        { merge: true }
+      );
+
+      onSelectGenre(genre);
+      setSelectedGenreIds(updatedGenreIds);
+    } catch (error) {
+      console.error("Error inserting genre ID into Firebase:", error);
+    }
+  };
   if (error) return null;
   if (isLoading) return <Spinner />;
 
@@ -34,7 +86,7 @@ const GenreList = ({ selectedGenre, onSelectGenre }: Props) => {
               <Button
                 whiteSpace="normal"
                 textAlign="left"
-                onClick={() => onSelectGenre(genre)}
+                onClick={() => insertGenreIdIntoFirebase(genre)}
                 fontWeight={genre.id === selectedGenre?.id ? "bold" : "normal"}
                 fontSize="lg"
                 variant="link"
