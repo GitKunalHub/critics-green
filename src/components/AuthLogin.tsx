@@ -12,6 +12,7 @@ import {
 import React, { useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
@@ -94,12 +95,31 @@ const LoginForm = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const signIn = async () => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigateTo("/home");
-    } catch (err) {
-      console.error(err);
+  const [isSignUp, setIsSignUp] = useState(false);
+
+  const toggleSignUp = () => {
+    setIsSignUp(!isSignUp); // Toggle the state to switch between sign-in and sign-up
+  };
+
+  const authenticationHandler = async () => {
+    if (isSignUp) {
+      // Sign Up
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        navigateTo("/home");
+      } catch (error) {
+        console.error("Sign Up failed:", error);
+        // You can display an error message to the user here
+      }
+    } else {
+      // Sign In
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        navigateTo("/home");
+      } catch (error) {
+        console.log("Sign In failed:", error);
+        // You can display an error message to the user here
+      }
     }
   };
 
@@ -140,14 +160,29 @@ const LoginForm = () => {
             placeholder="Enter your Password.."
           />
         </FormControl>
-        <Button
-          onClick={signIn}
-          colorScheme={VariantColour}
-          width="full"
-          marginTop={9}
-        >
-          Sign In
-        </Button>
+        {isSignUp ? (
+          <>
+            <Button
+              onClick={authenticationHandler}
+              colorScheme={VariantColour}
+              width="full"
+              marginTop={9}
+            >
+              Sign Up
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              onClick={authenticationHandler}
+              colorScheme={VariantColour}
+              width="full"
+              marginTop={9}
+            >
+              Sign In
+            </Button>
+          </>
+        )}
         <Button
           onClick={signInWithGoogle}
           colorScheme={VariantColour}
@@ -155,7 +190,17 @@ const LoginForm = () => {
           marginTop={4}
           leftIcon={<FcGoogle />} // Add the Google logo as an icon
         >
-          Sign up with Google
+          Login with Google
+        </Button>
+
+        <Button
+          onClick={toggleSignUp} // Toggle between Sign In and Sign Up
+          variant="link"
+          color={VariantColour}
+          width="full"
+          marginTop={4}
+        >
+          {isSignUp ? "Already have an account? Sign In" : "New user? Sign Up"}
         </Button>
       </form>
     </Box>
