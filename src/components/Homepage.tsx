@@ -19,7 +19,7 @@ export interface MovieQuery {
   searchText: string;
 }
 
-const Home = () => {
+const Homepage = () => {
   const [movieQuery, setMovieQuery] = useState<MovieQuery>({} as MovieQuery);
   const [movieList, setMovieList] = useState([]);
   const moviesCollectionRef = collection(db, "movies");
@@ -93,4 +93,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Homepage;

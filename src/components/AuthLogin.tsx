@@ -20,7 +20,8 @@ import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 
 const VariantColour = "teal";
-const Auth = () => {
+
+const AuthLogin = () => {
   return (
     <div>
       <Flex
@@ -89,11 +90,14 @@ const LoginHeader = () => {
 };
 
 const LoginForm = () => {
+  const navigateTo = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const signIn = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      navigateTo("/home");
     } catch (err) {
       console.error(err);
     }
@@ -102,6 +106,7 @@ const LoginForm = () => {
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
+      navigateTo("/home");
     } catch (err) {
       console.error(err);
     }
@@ -110,6 +115,7 @@ const LoginForm = () => {
   const logOut = async () => {
     try {
       await signOut(auth);
+      navigateTo("/");
     } catch (err) {
       console.error(err);
     }
@@ -156,4 +162,4 @@ const LoginForm = () => {
   );
 };
 
-export default Auth;
+export default AuthLogin;

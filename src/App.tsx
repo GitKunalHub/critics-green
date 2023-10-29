@@ -9,16 +9,19 @@ import useMovie from "./hooks/useMovie";
 import SortSelector from "./components/SortSelector";
 import SearchInput from "./components/SearchInput";
 import MovieHeading from "./components/MovieHeading";
-import Auth from "./components/Auth";
+import Auth from "./components/AuthLogin";
 import { db } from "./configuration/firebase";
 import { getDocs, collection } from "firebase/firestore";
 import {
+  BrowserRouter,
   Navigate,
   Route,
   BrowserRouter as Router,
   Routes,
 } from "react-router-dom";
-import Home from "./components/Home";
+import Home from "./components/Homepage";
+import AuthLogin from "./components/AuthLogin";
+import Homepage from "./components/Homepage";
 
 export interface MovieQuery {
   genre: Genre | null;
@@ -29,9 +32,14 @@ export interface MovieQuery {
 
 function App() {
   return (
-    <>
-      <Auth />
-    </>
+    <BrowserRouter>
+      <div>
+        <Routes>
+          <Route path="/" element={<AuthLogin />} />
+          <Route path="/home" element={<Homepage />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
