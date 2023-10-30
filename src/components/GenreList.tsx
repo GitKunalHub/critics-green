@@ -17,6 +17,7 @@ import {
   doc,
   setDoc,
   getDoc,
+  addDoc,
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
 
@@ -55,14 +56,19 @@ const GenreList = ({ selectedGenre, onSelectGenre }: Props) => {
     try {
       const updatedGenreIds = [...selectedGenreIds, genre.id];
 
-      const userDocRef = doc(collection(db, "users"), auth.currentUser.uid);
-      await setDoc(
-        userDocRef,
-        {
-          selectedGenreIds: updatedGenreIds,
-        },
-        { merge: true }
+      // Create a reference to the subcollection
+      const userSubcollectionRef = doc(
+        db,
+        "users",
+        auth.currentUser.uid
+        // Replace with the name of your subcollection
+        // Replace with the document ID within the subcollection
       );
+
+      // Use setDoc to update the document within the subcollection
+      await setDoc(userSubcollectionRef, {
+        selectedGenreIds: updatedGenreIds,
+      });
 
       onSelectGenre(genre);
       setSelectedGenreIds(updatedGenreIds);
@@ -70,6 +76,7 @@ const GenreList = ({ selectedGenre, onSelectGenre }: Props) => {
       console.error("Error inserting genre ID into Firebase:", error);
     }
   };
+
   if (error) return null;
   if (isLoading) return <Spinner />;
 

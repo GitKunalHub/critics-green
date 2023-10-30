@@ -9,8 +9,10 @@ import PlatformSelector from "./PlatformSelector";
 import SortSelector from "./SortSelector";
 import { Genre } from "../hooks/useGenres";
 import { collection, getDocs } from "@firebase/firestore";
-import { db } from "../configuration/firebase";
+import { auth, db } from "../configuration/firebase";
 import useMovie from "../hooks/useMovie";
+import { doc, getDoc } from "firebase/firestore";
+import RecommendedMovies from "./RecommendedMovies";
 
 export interface MovieQuery {
   genre: Genre | null;
@@ -20,31 +22,44 @@ export interface MovieQuery {
 }
 
 const Homepage = () => {
-  const [movieQuery, setMovieQuery] = useState<MovieQuery>({} as MovieQuery);
-  const [movieList, setMovieList] = useState([]);
-  const moviesCollectionRef = collection(db, "movies");
+  const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
+  const [userId, setUserId] = useState<null | string>(null); // Change the type here
 
   useEffect(() => {
-    const getMovieList = async () => {
-      try {
-        const data = await getDocs(moviesCollectionRef);
-        const filteredData = data.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        console.log(filteredData);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getMovieList();
+    // Fetch the user's ID (Document ID) from your authentication system
+
+    if (auth.currentUser) {
+      // Set the user's ID (Document ID) if the user is authenticated
+      setUserId(auth.currentUser.uid);
+    }
   }, []);
+
+  useEffect(() => {
+    if (userId) {
+      // Fetch the user's selected genres based on their Document ID
+      const fetchSelectedGenres = async () => {
+        const userDocRef = doc(db, "users", userId);
+        const userDocSnapshot = await getDoc(userDocRef);
+
+        if (userDocSnapshot.exists()) {
+          const userDoc = userDocSnapshot.data();
+          if (userDoc.selectedGenreIds) {
+            setSelectedGenres(userDoc.selectedGenreIds);
+          }
+        }
+      };
+
+      fetchSelectedGenres();
+    }
+  }, [userId]);
+
+  const [movieQuery, setMovieQuery] = useState<MovieQuery>({} as MovieQuery);
 
   const handlePlatformSelect = (platform: string) => {
     setMovieQuery({ ...movieQuery, platform });
   };
 
-  const { movies, error, isLoading } = useMovie(movieQuery);
+  const { movies, error, isLoading } = useMovie(movieQuery, selectedGenres);
 
   return (
     <Grid
@@ -87,7 +102,16 @@ const Homepage = () => {
             />
           </Flex>
         </Box>
-        <MovieGrid movieQuery={movieQuery} />
+        {selectedGenres.length > 0 ? (
+          // Render RecommendedMovies if selectedGenres has values
+          <RecommendedMovies
+            selectedGenres={selectedGenres}
+            movieQuery={movieQuery}
+          />
+        ) : (
+          // Render MovieGrid if selectedGenres is empty
+          <MovieGrid movieQuery={movieQuery} selectedGenres={selectedGenres} />
+        )}
       </GridItem>
     </Grid>
   );

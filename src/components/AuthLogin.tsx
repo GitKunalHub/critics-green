@@ -6,10 +6,9 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  IconButton,
   Input,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -47,19 +46,6 @@ const AuthLogin = () => {
           </Box>
         </Box>
       </Flex>
-      {/* <Input
-        placeholder="EMail..."
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <Input
-        placeholder="Password..."
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-
-      <Button onClick={signIn}>Sign in</Button>
-      <Button onClick={signInWithGoogle}>Sign in with Google!</Button>
-      <Button onClick={logOut}>Logout</Button> */}
     </div>
   );
 };

@@ -18,7 +18,7 @@ interface FetchMovieResponse {
   results: Movie[];
 }
 
-const useMovie = (movieQuery: MovieQuery) => {
+const useMovie = (movieQuery: MovieQuery, selectedGenres: number[] | null) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
@@ -34,13 +34,25 @@ const useMovie = (movieQuery: MovieQuery) => {
     if (movieQuery.searchText) {
       apiUrl = "/search/multi"; // Use the multi-search endpoint for searching
     }
+    // if (selectedGenres && selectedGenres.length > 0) {
+    //   apiUrl += `/${selectedGenres.join(",")}`;
+    // }
+    const params: { [key: string]: any } = {
+      sort_by: movieQuery.sortOrder,
+      query: movieQuery.searchText,
+    };
+
+    if (movieQuery.genre) {
+      params.with_genres = movieQuery.genre.id;
+    }
+
+    if (selectedGenres && selectedGenres.length > 0) {
+      params.with_genres = selectedGenres.join(",");
+    }
+
     apiClient
       .get<FetchMovieResponse>(apiUrl, {
-        params: {
-          with_genres: movieQuery.genre?.id,
-          sort_by: movieQuery.sortOrder,
-          query: movieQuery.searchText,
-        },
+        params,
         signal: controller.signal,
       })
       .then((res) => {

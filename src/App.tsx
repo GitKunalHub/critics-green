@@ -10,8 +10,15 @@ import SortSelector from "./components/SortSelector";
 import SearchInput from "./components/SearchInput";
 import MovieHeading from "./components/MovieHeading";
 import Auth from "./components/AuthLogin";
-import { db } from "./configuration/firebase";
-import { getDocs, collection } from "firebase/firestore";
+import { auth, db } from "./configuration/firebase";
+import {
+  getDocs,
+  collection,
+  query,
+  where,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import {
   BrowserRouter,
   Navigate,

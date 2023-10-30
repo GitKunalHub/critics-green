@@ -9,10 +9,10 @@ import MovieDetails from "./MovieDetails";
 
 interface Props {
   movieQuery: MovieQuery;
-  selectedGenres: number[] | null;
+  selectedGenres: number[]; // Add selectedGenres prop
 }
 
-const MovieGrid = ({ movieQuery, selectedGenres }: Props) => {
+const RecommendedMovies = ({ selectedGenres, movieQuery }: Props) => {
   const {
     movies: data,
     error,
@@ -61,4 +61,4 @@ const MovieGrid = ({ movieQuery, selectedGenres }: Props) => {
   );
 };
 
-export default MovieGrid;
+export default RecommendedMovies;
