@@ -17,7 +17,7 @@ const MovieGrid = ({ movieQuery, selectedGenres }: Props) => {
     movies: data,
     error,
     isLoading,
-  } = useMovie(movieQuery, selectedGenres);
+  } = useMovie(movieQuery, selectedGenres, false);
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
   const [selectedMovie, setSelectedMovie] = useState<null | Movie>(null);
 

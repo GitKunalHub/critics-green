@@ -43,6 +43,7 @@ const Homepage = () => {
 
         if (userDocSnapshot.exists()) {
           const userDoc = userDocSnapshot.data();
+
           if (userDoc.selectedGenreIds) {
             setSelectedGenres(userDoc.selectedGenreIds);
           }
@@ -104,10 +105,16 @@ const Homepage = () => {
         </Box>
         {selectedGenres.length > 0 ? (
           // Render RecommendedMovies if selectedGenres has values
-          <RecommendedMovies
-            selectedGenres={selectedGenres}
-            movieQuery={movieQuery}
-          />
+          <>
+            <RecommendedMovies
+              selectedGenres={selectedGenres}
+              movieQuery={movieQuery}
+            />
+            <MovieGrid
+              movieQuery={movieQuery}
+              selectedGenres={selectedGenres}
+            />
+          </>
         ) : (
           // Render MovieGrid if selectedGenres is empty
           <MovieGrid movieQuery={movieQuery} selectedGenres={selectedGenres} />

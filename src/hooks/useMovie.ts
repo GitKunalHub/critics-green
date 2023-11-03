@@ -18,7 +18,11 @@ interface FetchMovieResponse {
   results: Movie[];
 }
 
-const useMovie = (movieQuery: MovieQuery, selectedGenres: number[] | null) => {
+const useMovie = (
+  movieQuery: MovieQuery,
+  selectedGenres: number[] | null,
+  includeGenresParam: boolean = true
+) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
@@ -46,7 +50,7 @@ const useMovie = (movieQuery: MovieQuery, selectedGenres: number[] | null) => {
       params.with_genres = movieQuery.genre.id;
     }
 
-    if (selectedGenres && selectedGenres.length > 0) {
+    if (includeGenresParam && selectedGenres && selectedGenres.length > 0) {
       params.with_genres = selectedGenres.join(",");
     }
 
@@ -80,7 +84,7 @@ const useMovie = (movieQuery: MovieQuery, selectedGenres: number[] | null) => {
       });
 
     return () => controller.abort();
-  }, [movieQuery]);
+  }, [movieQuery, includeGenresParam]);
 
   return { movies, error, isLoading };
 };

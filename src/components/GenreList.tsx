@@ -39,7 +39,12 @@ const GenreList = ({ selectedGenre, onSelectGenre }: Props) => {
         if (userDocSnapshot.exists()) {
           const userData = userDocSnapshot.data();
           if (userData && userData.selectedGenreIds) {
-            setSelectedGenreIds(userData.selectedGenreIds);
+            // Get the most recent 2 selectedGenreIds
+            const recentGenreIds = userData.selectedGenreIds
+              .slice(-2) // Get the last 2 elements
+              .reverse(); // Reverse the order to get the most recent first
+
+            setSelectedGenreIds(recentGenreIds);
           }
         }
       }

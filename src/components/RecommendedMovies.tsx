@@ -1,4 +1,4 @@
-import { SimpleGrid, Text } from "@chakra-ui/react";
+import { Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import useMovie, { Movie } from "../hooks/useMovie";
 import MovieCard from "./MovieCard";
 import MovieCardSkeleton from "./MovieCardSkeleton";
@@ -17,8 +17,8 @@ const RecommendedMovies = ({ selectedGenres, movieQuery }: Props) => {
     movies: data,
     error,
     isLoading,
-  } = useMovie(movieQuery, selectedGenres);
-  const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+  } = useMovie(movieQuery, selectedGenres, true);
+  const skeletons = [1, 2, 3];
   const [selectedMovie, setSelectedMovie] = useState<null | Movie>(null);
 
   if (error) return <Text>{error}</Text>;
@@ -33,6 +33,7 @@ const RecommendedMovies = ({ selectedGenres, movieQuery }: Props) => {
 
   return (
     <>
+      <Heading>Recommended</Heading>
       {selectedMovie ? (
         <MovieDetails movie={selectedMovie} onClose={handleCloseDetails} />
       ) : (
@@ -47,7 +48,7 @@ const RecommendedMovies = ({ selectedGenres, movieQuery }: Props) => {
                 <MovieCardSkeleton />
               </MovieCardContainer>
             ))}
-          {data.map((movie) => (
+          {data.slice(0, 4).map((movie) => (
             <MovieCardContainer key={movie.id}>
               <MovieCard
                 movie={movie}

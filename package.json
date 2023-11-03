@@ -21,6 +21,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
     "react-router-dom": "^6.17.0",
+    "react-spring": "^9.7.3",
     "simple-git": "^3.20.0"
   },
   "devDependencies": {
