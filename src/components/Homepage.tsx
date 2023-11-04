@@ -13,6 +13,8 @@ import { auth, db } from "../configuration/firebase";
 import useMovie from "../hooks/useMovie";
 import { doc, getDoc } from "firebase/firestore";
 import RecommendedMovies from "./RecommendedMovies";
+import { Button, HStack } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 export interface MovieQuery {
   genre: Genre | null;
@@ -24,6 +26,7 @@ export interface MovieQuery {
 const Homepage = () => {
   const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
   const [userId, setUserId] = useState<null | string>(null); // Change the type here
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch the user's ID (Document ID) from your authentication system
@@ -74,11 +77,22 @@ const Homepage = () => {
       }}
     >
       <GridItem area="nav">
-        <NavBar
-          onSearch={(searchText) =>
-            setMovieQuery({ ...movieQuery, searchText })
-          }
-        />
+        <HStack>
+          <NavBar
+            onSearch={(searchText) =>
+              setMovieQuery({ ...movieQuery, searchText })
+            }
+          />
+
+          <Button
+            onClick={() => {
+              // Add any logout logic here (e.g., signing the user out)
+              navigate("/");
+            }}
+          >
+            Log out
+          </Button>
+        </HStack>
       </GridItem>
       <Show above="lg">
         <GridItem area="aside" paddingX="5px">
