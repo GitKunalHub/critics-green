@@ -82,19 +82,22 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
+  const [error, setError] = useState(null);
 
   const toggleSignUp = () => {
     setIsSignUp(!isSignUp); // Toggle the state to switch between sign-in and sign-up
+    setError(null);
   };
 
   const authenticationHandler = async () => {
+    setError(null);
     if (isSignUp) {
       // Sign Up
       try {
         await createUserWithEmailAndPassword(auth, email, password);
         navigateTo("/home");
-      } catch (error) {
-        console.error("Sign Up failed:", error);
+      } catch (msg: any) {
+        setError(msg.message);
         // You can display an error message to the user here
       }
     } else {
@@ -102,19 +105,20 @@ const LoginForm = () => {
       try {
         await signInWithEmailAndPassword(auth, email, password);
         navigateTo("/home");
-      } catch (error) {
-        console.log("Sign In failed:", error);
+      } catch (msg: any) {
+        setError(msg.message);
         // You can display an error message to the user here
       }
     }
   };
 
   const signInWithGoogle = async () => {
+    setError(null);
     try {
       await signInWithPopup(auth, googleProvider);
       navigateTo("/home");
-    } catch (err) {
-      console.error(err);
+    } catch (msg: any) {
+      setError(msg.message);
     }
   };
 
@@ -188,6 +192,11 @@ const LoginForm = () => {
         >
           {isSignUp ? "Already have an account? Sign In" : "New user? Sign Up"}
         </Button>
+        {error && (
+          <Box marginTop={4} color="red.500">
+            {error}
+          </Box>
+        )}
       </form>
     </Box>
   );
