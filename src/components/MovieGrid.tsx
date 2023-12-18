@@ -4,13 +4,12 @@ import MovieCard from "./MovieCard";
 import MovieCardSkeleton from "./MovieCardSkeleton";
 import MovieCardContainer from "./MovieCardContainer";
 import { MovieQuery } from "../App";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import MovieDetails from "./MovieDetails";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../configuration/firebase";
 import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
 import React from "react";
-import LoadingBar from "react-top-loading-bar";
 
 interface Props {
   movieQuery: MovieQuery;
@@ -23,7 +22,7 @@ const MovieGrid = ({ movieQuery, selectedGenres }: Props) => {
     error,
     isLoading,
   } = useMovie(movieQuery, selectedGenres, false);
-  const ref = useRef(null);
+
   const addMovieToCollection = async (movieData: Movie) => {
     try {
       const moviesCollectionRef = collection(db, "movies");
@@ -94,7 +93,6 @@ const MovieGrid = ({ movieQuery, selectedGenres }: Props) => {
 
   return (
     <>
-      <LoadingBar color="#f11946" ref={ref} shadow={true} />
       {selectedGenres?.length > 0 ? (
         // Render RecommendedMovies if selectedGenres has values
         <>
