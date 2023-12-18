@@ -86,7 +86,6 @@ const Homepage = () => {
 
           <Button
             onClick={() => {
-              // Add any logout logic here (e.g., signing the user out)
               navigate("/");
             }}
           >
@@ -117,22 +116,8 @@ const Homepage = () => {
             />
           </Flex>
         </Box>
-        {selectedGenres.length > 0 ? (
-          // Render RecommendedMovies if selectedGenres has values
-          <>
-            <RecommendedMovies
-              selectedGenres={selectedGenres}
-              movieQuery={movieQuery}
-            />
-            <MovieGrid
-              movieQuery={movieQuery}
-              selectedGenres={selectedGenres}
-            />
-          </>
-        ) : (
-          // Render MovieGrid if selectedGenres is empty
-          <MovieGrid movieQuery={movieQuery} selectedGenres={selectedGenres} />
-        )}
+
+        <MovieGrid movieQuery={movieQuery} selectedGenres={selectedGenres} />
       </GridItem>
     </Grid>
   );

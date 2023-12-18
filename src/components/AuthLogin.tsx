@@ -8,7 +8,7 @@ import {
   Heading,
   Input,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -18,12 +18,14 @@ import {
 import ColorModeSwitch from "./ColorModeSwitch";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
+import LoadingBar from "react-top-loading-bar";
 
 const VariantColour = "teal";
-
+const ref = useRef(null);
 const AuthLogin = () => {
   return (
     <div>
+      <LoadingBar color="#f11946" ref={ref} shadow={true} />
       <Flex
         minHeight="100vh"
         width="full"
