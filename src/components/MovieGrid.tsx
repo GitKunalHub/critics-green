@@ -9,7 +9,6 @@ import MovieDetails from "./MovieDetails";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../configuration/firebase";
 import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
-import React from "react";
 
 interface Props {
   movieQuery: MovieQuery;

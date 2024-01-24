@@ -83,6 +83,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const toggleSignUp = () => {
     setIsSignUp(!isSignUp); // Toggle the state to switch between sign-in and sign-up
