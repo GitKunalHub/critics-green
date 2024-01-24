@@ -14,7 +14,7 @@ interface Props {
 
 const RecommendedMovies = ({ selectedGenres, movieQuery }: Props) => {
   const {
-    movies: data,
+    movies: data2,
     error,
     isLoading,
   } = useMovie(movieQuery, selectedGenres, true);
@@ -33,7 +33,6 @@ const RecommendedMovies = ({ selectedGenres, movieQuery }: Props) => {
 
   return (
     <>
-      <Heading>Recommended</Heading>
       {selectedMovie ? (
         <MovieDetails movie={selectedMovie} onClose={handleCloseDetails} />
       ) : (
@@ -48,7 +47,7 @@ const RecommendedMovies = ({ selectedGenres, movieQuery }: Props) => {
                 <MovieCardSkeleton />
               </MovieCardContainer>
             ))}
-          {data.slice(0, 4).map((movie) => (
+          {data2.slice(0, 4).map((movie) => (
             <MovieCardContainer key={movie.id}>
               <MovieCard
                 movie={movie}

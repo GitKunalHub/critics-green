@@ -26,6 +26,7 @@ import {
   serverTimestamp,
   where,
 } from "firebase/firestore";
+import CriticScore2 from "./CriticScore2";
 
 async function sentimentQuery(dataCG: { inputs: string }) {
   const response = await fetch(
@@ -192,11 +193,11 @@ const MovieDetails = ({ movie, onClose }: Props) => {
             iMDb Rating: <CriticScore score={movie.vote_average} />
           </Text>
           <Text fontSize="md">
-            Critics-Green Rating: <CriticScore score={averageRating} />
+            Critics-Green Rating: <CriticScore2 score={averageRating} />
           </Text>
           <Text fontSize="md">
             Your Rating:{" "}
-            <CriticScore score={userRating !== null ? userRating : 0} />
+            <CriticScore2 score={userRating !== null ? userRating : 0} />
           </Text>
         </VStack>
       </HStack>

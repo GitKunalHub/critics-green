@@ -23,6 +23,7 @@ const SearchInput = ({ onSearch }: Props) => {
           borderRadius={20}
           placeholder="Search Movies/TV"
           variant="filled"
+          width="100%"
         />
       </InputGroup>
     </form>

@@ -9,6 +9,7 @@ import MovieDetails from "./MovieDetails";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../configuration/firebase";
 import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
+import RecommendedMovies from "./RecommendedMovies";
 
 interface Props {
   movieQuery: MovieQuery;
@@ -57,28 +58,6 @@ const MovieGrid = ({ movieQuery, selectedGenres }: Props) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (userId) {
-      // Fetch the user's selected genres based on their Document ID
-      const fetchSelectedGenres = async () => {
-        const userDocRef = doc(db, "users", userId);
-        const userDocSnapshot = await getDoc(userDocRef);
-
-        if (userDocSnapshot.exists()) {
-          const userDoc = userDocSnapshot.data();
-
-          if (userDoc.selectedGenreIds) {
-            setSelectedGenre(userDoc.selectedGenreIds);
-          }
-        }
-      };
-
-      fetchSelectedGenres();
-    }
-  }, [userId]);
-
-  const { movies: data2 } = useMovie(movieQuery, selectedGenre, true);
-
   if (error) return <Text>{error}</Text>;
 
   const handleMovieClick = async (movie: Movie) => {
@@ -100,26 +79,10 @@ const MovieGrid = ({ movieQuery, selectedGenres }: Props) => {
             <MovieDetails movie={selectedMovie} onClose={handleCloseDetails} />
           ) : (
             <>
-              <SimpleGrid
-                columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
-                padding="10px"
-                spacing={6}
-              >
-                {isLoading &&
-                  skeletons.map((skeleton) => (
-                    <MovieCardContainer key={skeleton}>
-                      <MovieCardSkeleton />
-                    </MovieCardContainer>
-                  ))}
-                {data2.slice(0, 4).map((movie) => (
-                  <MovieCardContainer key={movie.id}>
-                    <MovieCard
-                      movie={movie}
-                      onClick={() => handleMovieClick(movie)}
-                    />
-                  </MovieCardContainer>
-                ))}
-              </SimpleGrid>
+              <RecommendedMovies
+                movieQuery={movieQuery}
+                selectedGenres={selectedGenres}
+              />
               <Heading>Our Trending Movies!</Heading>
               <SimpleGrid
                 columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}

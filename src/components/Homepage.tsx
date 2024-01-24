@@ -77,21 +77,11 @@ const Homepage = () => {
       }}
     >
       <GridItem area="nav">
-        <HStack>
-          <NavBar
-            onSearch={(searchText) =>
-              setMovieQuery({ ...movieQuery, searchText })
-            }
-          />
-
-          <Button
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            Log out
-          </Button>
-        </HStack>
+        <NavBar
+          onSearch={(searchText) =>
+            setMovieQuery({ ...movieQuery, searchText })
+          }
+        />
       </GridItem>
       <Show above="lg">
         <GridItem area="aside" paddingX="5px">
