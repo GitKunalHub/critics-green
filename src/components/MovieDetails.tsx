@@ -169,6 +169,10 @@ const MovieDetails = ({ movie, onClose }: Props) => {
     console.log("Submitted Rating:", userRating);
   };
 
+  const redirectToExternalSite = () => {
+    window.location.href = `https://gravitygreen.vercel.app/g/${movie.title}`;
+  };
+
   return (
     <Box p={4} boxShadow="lg" borderRadius="lg">
       <Button onClick={onClose} position="relative" top={2} left="90%">
@@ -199,6 +203,7 @@ const MovieDetails = ({ movie, onClose }: Props) => {
             Your Rating:{" "}
             <CriticScore2 score={userRating !== null ? userRating : 0} />
           </Text>
+          <Button onClick={redirectToExternalSite}>Discussion Forum</Button>
         </VStack>
       </HStack>
 
